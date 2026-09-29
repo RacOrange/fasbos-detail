@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="preload" as="image" href="assets/story-01-notice.webp">
+  <link rel="preload" as="image" href="assets/story-02-report.webp">
+  <link rel="preload" as="image" href="assets/story-03-receive.webp">
+  <link rel="preload" as="image" href="assets/story-04-spread.webp">
+  <link rel="preload" as="image" href="assets/demo-case-d01.jpg">
+  <link rel="preload" as="image" href="assets/method-observe.webp">
+  <link rel="preload" as="image" href="assets/method-context.webp">
+  <link rel="preload" as="image" href="assets/method-judgment.webp">
+  <link rel="preload" as="image" href="assets/method-reason.webp">
+  <title>FASBOS 开题答辩｜让田间发现真正抵达决策</title>
+  <style>
+    :root{
+      --forest:#143b2f;--forest2:#1d5140;--ink:#10271e;--paper:#f4f7f1;
+      --mist:#e3eadf;--leaf:#aeca63;--field:#c8d3a6;--clay:#dc6c37;
+      --white:#fff;--muted:#607067;--line:rgba(20,59,47,.16);
+      --sans:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif;
+      --display:"Bahnschrift","Microsoft YaHei","PingFang SC",sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071b14;color:var(--ink);font-family:var(--sans)}
+    button{font:inherit}
+    .deck{position:fixed;inset:0;background:#071b14}
+    .slide{position:absolute;inset:0;width:100vw;height:100vh;overflow:hidden;display:none;background:var(--paper);isolation:isolate}
+    .slide.active{display:flex;animation:enter .45s cubic-bezier(.2,.8,.2,1)}
+    @keyframes enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    .pad{padding:6.5vh 6vw}
+    .dark{background:var(--forest);color:white}
+    .black{background:#071b14;color:white}
+    .title{font:700 clamp(34px,4vw,78px)/1.08 var(--display);letter-spacing:-.045em;margin:0}
+    .display{font:750 clamp(54px,7vw,130px)/.98 var(--display);letter-spacing:-.055em;margin:0}
+    .lede{font-size:clamp(18px,1.55vw,30px);line-height:1.7;color:var(--muted);max-width:960px}
+    .dark .lede,.black .lede{color:#c6d9cf}
+    .mini{font-size:clamp(12px,.86vw,17px);line-height:1.6;color:var(--muted)}
+    .dark .mini,.black .mini{color:#9fbbad}
+    .chapter{display:inline-flex;align-items:center;gap:14px;font-weight:700;font-size:clamp(13px,1vw,18px);color:var(--forest2)}
+    .chapter:before{content:"";width:44px;height:4px;background:var(--leaf)}
+    .dark .chapter,.black .chapter{color:#b9d58b}
+    .source{position:absolute;left:6vw;right:6vw;bottom:2.3vh;padding-top:10px;border-top:1px solid var(--line);font-size:clamp(10px,.65vw,13px);color:#738078}
+    .dark .source,.black .source{border-color:rgba(255,255,255,.15);color:#91aa9e}
+    .slide-no{position:absolute;right:2.4vw;bottom:2.2vh;font:600 12px/1 var(--display);color:#789084}
+    .topline{position:absolute;top:0;left:0;right:0;height:8px;background:linear-gradient(90deg,var(--leaf) 0 24%,var(--clay) 24% 31%,transparent 31%)}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:4vw}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:2.2vw}
+    .vcenter{display:flex;flex-direction:column;justify-content:center}
+    .photo{width:100%;height:100%;object-fit:cover}
+    .rule{height:1px;background:var(--line);margin:2vh 0}
+    .pill{display:inline-flex;padding:.4em .8em;background:var(--leaf);color:var(--forest);font-weight:800;border-radius:999px}
+    .orange{color:var(--clay)}
+    .big-number{font:800 clamp(60px,8vw,150px)/.9 var(--display);letter-spacing:-.05em}
+    .quote{font:650 clamp(28px,3.5vw,68px)/1.25 var(--display);letter-spacing:-.035em}
+
+    /* navigation */
+    .controls{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:50;display:grid;gap:8px}
+    .controls button{width:42px;height:42px;border:1px solid rgba(255,255,255,.2);background:rgba(7,27,20,.78);color:white;border-radius:50%;cursor:pointer;backdrop-filter:blur(8px)}
+    .controls button:hover,.controls button:focus-visible{background:var(--leaf);color:var(--forest);outline:none}
+    .progress{position:fixed;left:0;bottom:0;height:5px;background:var(--leaf);z-index:60;transition:width .35s ease}
+    .counter{position:fixed;left:20px;bottom:14px;z-index:60;color:white;background:rgba(7,27,20,.78);padding:6px 10px;border-radius:20px;font:600 12px var(--display)}
+    .hint{position:fixed;top:16px;right:20px;z-index:60;color:#d8e6df;background:rgba(7,27,20,.72);padding:7px 11px;border-radius:20px;font-size:12px;opacity:.22;transition:opacity .2s}
+    .hint:hover{opacity:.9}
+
+    /* 1 cover */
+    .cover{display:grid!important;grid-template-columns:1.05fr .95fr}
+    .cover-copy{background:var(--forest);color:white;padding:8vh 6vw;display:flex;flex-direction:column;justify-content:space-between}
+    .cover-photo{position:relative;overflow:hidden}
+    .cover-photo img{width:100%;height:100%;object-fit:cover}
+    .cover-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,59,47,.25),transparent 35%)}
+    .cover-kicker{font-size:clamp(15px,1.15vw,22px);color:var(--leaf);font-weight:700}
+    .cover-title{font:750 clamp(54px,6vw,116px)/.98 var(--display);letter-spacing:-.06em;margin:0}
+    .cover .lede{color:#b9cec4}
+    .identity{border-top:1px solid rgba(255,255,255,.2);padding-top:18px;color:#c9dbd2;font-size:clamp(14px,1vw,19px);line-height:1.7}
+
+    /* signal motif */
+    .signal{position:absolute;inset:0;pointer-events:none;opacity:.75}
+    .signal path{stroke:var(--leaf);stroke-width:3;fill:none;stroke-dasharray:10 12}
+    .signal circle{fill:var(--clay);filter:drop-shadow(0 0 9px var(--clay))}
+    .active .signal circle{animation:travel 6s linear infinite}
+    @keyframes travel{0%,100%{opacity:.35}50%{opacity:1}}
+
+    /* agenda */
+    .agenda{display:grid;grid-template-rows:auto 1fr;gap:5vh}
+    .agenda-track{display:grid;grid-template-columns:repeat(6,1fr);position:relative;align-items:start}
+    .agenda-track:before{content:"";position:absolute;top:35px;left:4%;right:4%;height:2px;background:var(--line)}
+    .agenda-item{position:relative;padding:0 1.1vw}
+    .agenda-item i{display:flex;width:70px;height:70px;border-radius:50%;align-items:center;justify-content:center;background:var(--forest);color:white;font:700 24px var(--display);font-style:normal;margin-bottom:24px}
+    .agenda-item:nth-child(even) i{background:var(--clay)}
+    .agenda-item h3{font-size:clamp(17px,1.25vw,25px);margin:0 0 10px}
+    .agenda-item p{font-size:clamp(12px,.9vw,17px);line-height:1.6;color:var(--muted);margin:0}
+
+    /* section hero */
+    .section-photo{background-size:cover;background-position:center}
+    .section-photo:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,27,20,.94) 0 45%,rgba(7,27,20,.32) 78%,rgba(7,27,20,.05))}
+    .section-copy{position:relative;z-index:2;width:58%;padding:10vh 7vw;color:white;display:flex;flex-direction:column;justify-content:center}
+    .section-copy .display{font-size:clamp(52px,6.2vw,116px)}
+    .section-index{font:800 clamp(90px,14vw,260px)/.8 var(--display);color:rgba(174,202,99,.25);position:absolute;right:5vw;bottom:6vh}
+
+    /* photo evidence */
+    .evidence{display:grid;grid-template-columns:1.3fr .7fr}
+    .evidence .image{position:relative;overflow:hidden}
+    .evidence .image img{width:100%;height:100%;object-fit:cover}
+    .evidence .image:after{content:"现场";position:absolute;left:30px;bottom:30px;background:var(--forest);color:white;padding:10px 18px;font-weight:700}
+    .evidence .copy{padding:7vh 5vw;display:flex;flex-direction:column;justify-content:center}
+    .lost-list{list-style:none;padding:0;margin:3vh 0 0}
+    .lost-list li{font-size:clamp(20px,1.7vw,33px);padding:14px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+    .lost-list li:after{content:"未抵达";color:var(--clay);font-weight:700}
+
+    /* split argument */
+    .tension{display:grid;grid-template-columns:1fr 1fr}
+    .tension>div{padding:8vh 6vw;display:flex;flex-direction:column;justify-content:center}
+    .tension .left{background:#dce5d2}
+    .tension .right{background:var(--forest);color:white}
+    .tension ul{list-style:none;padding:0;margin:3vh 0}
+    .tension li{font-size:clamp(21px,1.7vw,34px);padding:13px 0}
+    .tension .left li:before{content:"×";color:var(--clay);margin-right:18px;font-weight:900}
+    .tension .right li:before{content:"+";color:var(--leaf);margin-right:18px;font-weight:900}
+
+    /* literature lines */
+    .lit-map{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:3.2vw;margin-top:7vh}
+    .lit-map:before{content:"";position:absolute;left:10%;right:10%;top:44px;height:2px;background:var(--field)}
+    .lit{position:relative}
+    .lit .node{width:88px;height:88px;border-radius:50%;background:var(--forest);color:white;display:flex;align-items:center;justify-content:center;font:800 30px var(--display);position:relative;z-index:2}
+    .lit:nth-child(2) .node{background:var(--clay)}
+    .lit h3{font-size:clamp(23px,2vw,38px);margin:25px 0 12px}
+    .lit p{font-size:clamp(15px,1.15vw,22px);color:var(--muted);line-height:1.7}
+
+    /* gap */
+    .gapchain{display:grid;grid-template-columns:1fr 80px 1fr 80px 1fr;align-items:center;margin-top:8vh}
+    .gapnode{border:1px solid rgba(255,255,255,.2);padding:4vh 2.2vw;min-height:240px}
+    .gapnode strong{display:block;color:var(--leaf);font:700 clamp(26px,2.4vw,46px) var(--display);margin-bottom:18px}
+    .gaparrow{text-align:center;font-size:44px;color:#658174}
+    .gaparrow.broken{color:var(--clay);transform:rotate(-12deg)}
+
+    /* methods */
+    .method-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);margin-top:4vh;border:1px solid var(--line)}
+    .method-step{background:white;padding:2.2vw;min-height:56vh;position:relative}
+    .method-step:nth-child(even){background:#edf2e8}
+    .method-step img{width:100%;height:28vh;object-fit:contain;mix-blend-mode:multiply}
+    .method-step b{display:block;font:800 clamp(28px,2.2vw,44px) var(--display);margin:2vh 0 1vh}
+    .method-step p{font-size:clamp(14px,1.05vw,20px);color:var(--muted);line-height:1.6}
+    .method-step em{position:absolute;top:18px;left:18px;font:800 16px var(--display);color:var(--clay);font-style:normal}
+    .dcs-board{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(280px,.72fr);gap:1.3vw;margin-top:2.4vh;min-height:61vh}
+    .dcs-slide.active{display:block}
+    .dcs-slide .title{font-size:clamp(36px,3.1vw,60px);max-width:94%}
+    .dcs-chain{display:grid;grid-template-rows:repeat(4,1fr);border:1px solid var(--line);background:var(--line);gap:1px}
+    .dcs-step{display:grid;grid-template-columns:3.2vw 7.4vw minmax(150px,.72fr) minmax(210px,1fr);align-items:center;gap:1vw;padding:.9vh 1.25vw;background:#fbfcf8;position:relative;overflow:hidden}
+    .dcs-step:nth-child(even){background:#eef3e8}
+    .dcs-step::after{content:"";position:absolute;left:1.55vw;bottom:-1.3vh;width:1px;height:2.6vh;background:var(--moss);z-index:2}
+    .dcs-step:last-child::after{display:none}
+    .dcs-step .idx{display:grid;place-items:center;width:2.15vw;aspect-ratio:1;border:1px solid var(--moss);border-radius:50%;font:800 clamp(11px,.78vw,15px) var(--display);color:var(--moss);background:white;z-index:3}
+    .dcs-step img{width:100%;height:10.5vh;object-fit:contain;mix-blend-mode:multiply}
+    .dcs-step h3{font:800 clamp(21px,1.55vw,31px) var(--display);line-height:1.05;margin:0}
+    .dcs-step h3 span{display:block;margin-top:.6vh;font:650 clamp(10px,.66vw,13px) var(--sans);color:var(--clay);letter-spacing:.04em}
+    .dcs-step p{font-size:clamp(13px,.88vw,17px);line-height:1.5;color:var(--muted);margin:0}
+    .dcs-object{background:var(--forest);color:white;padding:2.1vw;display:flex;flex-direction:column;position:relative;overflow:hidden}
+    .dcs-object::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 5%,rgba(191,215,159,.22),transparent 42%),linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:auto,32px 32px,32px 32px;pointer-events:none}
+    .dcs-object>*{position:relative}
+    .dcs-object h3{font:800 clamp(26px,2vw,39px) var(--display);line-height:1.08;margin:.8vh 0 2.2vh}
+    .object-field{display:grid;grid-template-columns:5.2em 1fr;gap:.7vw;padding:1.15vh 0;border-top:1px solid rgba(255,255,255,.16);font-size:clamp(12px,.82vw,16px);line-height:1.45}
+    .object-field b{color:var(--leaf)}
+    .object-field span{color:#e6eee7}
+    .object-trace{margin-top:auto;padding:1.35vh 1vw;background:rgba(255,255,255,.08);border-left:3px solid var(--clay);font-size:clamp(11px,.74vw,14px);line-height:1.5;color:#dce7df}
+    .dcs-boundary{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1vw;margin-top:1.45vh;padding:1.2vh 1.2vw;border:1px solid var(--line);background:#fff}
+    .dcs-boundary b{font:800 clamp(13px,.9vw,17px) var(--display);color:var(--forest)}
+    .dcs-boundary p{margin:0;font-size:clamp(12px,.78vw,15px);color:var(--muted)}
+    .dcs-boundary .rule{padding:.5vh .75vw;border-radius:99px;background:#edf3e7;color:var(--moss);font-size:clamp(10px,.68vw,13px);font-weight:800;white-space:nowrap}
+    .evidence-rail{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:4.2vh;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.16)}
+    .evidence-rail div{padding:1.25vw;background:rgba(255,255,255,.06)}
+    .evidence-rail b{display:block;color:var(--leaf);font:800 clamp(16px,1.15vw,22px) var(--display);margin-bottom:.5vh}
+    .evidence-rail span{font-size:clamp(11px,.75vw,14px);line-height:1.45;color:#bed0c5}
+    .output-proof{display:grid;grid-template-columns:repeat(3,1fr);gap:1vw;margin-top:2.4vh}
+    .output-proof div{padding:1.25vh 1vw;border-top:2px solid var(--moss);background:#edf3e7}
+    .output-proof b{display:block;font:800 clamp(15px,1vw,19px) var(--display);color:var(--forest);margin-bottom:.35vh}
+    .output-proof span{font-size:clamp(11px,.72vw,14px);line-height:1.4;color:var(--muted)}
+    .gap-slide.active,.outputs-slide.active{display:block}
+    .gap-slide .title,.outputs-slide .title{font-size:clamp(36px,3.15vw,62px);max-width:92%}
+    .gap-slide .gapchain{margin-top:3.5vh}
+    .gap-slide .gapnode{min-height:21vh;padding:2.6vh 2vw}
+    .outputs-slide .outputs{height:50vh;margin-top:2.2vh}
+    .outputs-slide .output{padding:2.2vw}
+    .outputs-slide .output .num{font-size:clamp(56px,6vw,112px)}
+
+    /* lanes */
+    .lanes{margin-top:3vh;display:grid;gap:12px}
+    .condition-stage{display:grid;grid-template-columns:minmax(0,1fr) 22vw;gap:2.2vw;align-items:stretch}
+    .condition-visual{margin-top:3vh;background:#dfe8d8;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+    .condition-visual:before{content:"SAME CONTENT · DIFFERENT CHANNEL";position:absolute;top:18px;left:20px;font:800 12px var(--display);letter-spacing:.18em;color:var(--forest);z-index:2}
+    .phone-stack{width:100%;height:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:52px 14px 18px}
+    .phone-stack img{width:31%;height:72%;object-fit:cover;object-position:top;border-radius:14px;border:5px solid white;box-shadow:0 18px 24px rgba(20,59,47,.14)}
+    .phone-stack img:nth-child(2){transform:translateY(-20px)}
+    .slide.conditions.active{display:block}
+    .conditions .lane{min-height:14vh}
+    .lane{display:grid;grid-template-columns:110px 1.25fr 1fr .9fr;align-items:center;min-height:16vh;background:white;border-left:12px solid var(--forest);box-shadow:0 10px 30px rgba(20,59,47,.06)}
+    .lane:nth-child(2){border-color:#6e9d7d}
+    .lane:nth-child(3){border-color:var(--clay)}
+    .lane>div{padding:1.4vw 1.8vw;border-left:1px solid var(--line);font-size:clamp(14px,1.05vw,21px);line-height:1.55}
+    .lane .code{font:800 clamp(34px,3vw,58px) var(--display);border:0}
+    .lane strong{display:block;color:var(--forest);margin-bottom:4px}
+
+    /* experiment */
+    .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:2.5vw;margin-top:7vh;position:relative}
+    .flow:before{content:"";position:absolute;left:7%;right:7%;top:40px;height:3px;background:linear-gradient(90deg,var(--leaf),var(--clay))}
+    .flowstep{position:relative;padding-top:90px}
+    .flowstep:before{content:attr(data-n);position:absolute;top:0;left:0;width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--forest);color:white;font:800 28px var(--display);z-index:2}
+    .flowstep:nth-child(even):before{background:var(--clay)}
+    .flowstep h3{font-size:clamp(18px,1.35vw,27px);margin:0 0 10px}
+    .flowstep p{font-size:clamp(12px,.9vw,17px);color:var(--muted);line-height:1.55}
+
+    /* metrics */
+    .metrics{display:grid;grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;height:63vh;margin-top:3vh}
+    .metric{padding:2.2vw;background:white;border:1px solid var(--line);position:relative;overflow:hidden}
+    .metric:first-child{grid-row:1/3;background:var(--forest);color:white}
+    .metric:nth-child(4){background:#dfe8d8}
+    .metric-code{font:850 clamp(42px,5vw,92px)/1 var(--display);letter-spacing:-.04em;color:var(--leaf)}
+    .metric:not(:first-child) .metric-code{color:var(--forest)}
+    .metric h3{font-size:clamp(20px,1.5vw,30px);margin:16px 0 10px}
+    .metric p{font-size:clamp(13px,.95vw,18px);line-height:1.6;color:var(--muted);margin:0}
+    .metric:first-child p{color:#c6d9cf}
+
+    /* eye */
+    .eye{display:grid;grid-template-columns:1.15fr .85fr;background:#061a13;color:white}
+    .eye-photo{position:relative}
+    .eye-photo img{width:100%;height:100%;object-fit:cover}
+    .reticle{position:absolute;width:180px;height:180px;border:2px solid var(--leaf);border-radius:50%;left:48%;top:48%;transform:translate(-50%,-50%);box-shadow:0 0 0 40px rgba(174,202,99,.08),0 0 0 80px rgba(174,202,99,.04)}
+    .reticle:before,.reticle:after{content:"";position:absolute;background:var(--leaf)}
+    .reticle:before{width:240px;height:1px;left:-30px;top:89px}.reticle:after{height:240px;width:1px;top:-30px;left:89px}
+    .eye-copy{padding:7vh 5vw;display:flex;flex-direction:column;justify-content:center}
+    .specs{display:grid;grid-template-columns:1fr 1fr;gap:2vw;margin-top:5vh}
+    .spec b{display:block;font:800 clamp(34px,3.7vw,70px) var(--display);color:var(--leaf)}
+    .spec span{font-size:clamp(13px,1vw,19px);color:#b8cdc2}
+
+    /* analysis */
+    .analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);margin-top:3vh}
+    .analysis-row{display:grid;grid-template-columns:.8fr 1.2fr;min-height:15vh;border-bottom:1px solid var(--line);background:white}
+    .analysis-row:nth-child(3),.analysis-row:nth-child(4){border-bottom:0}
+    .analysis-row:nth-child(odd){border-right:1px solid var(--line)}
+    .analysis-row b{padding:1.8vw;background:#e3ebdc;font-size:clamp(16px,1.2vw,24px)}
+    .analysis-row div{padding:1.8vw;font-size:clamp(13px,1vw,19px);line-height:1.55}
+
+    /* innovation */
+    .innov{display:grid;grid-template-columns:repeat(3,1fr);height:100%}
+    .innov>div{padding:9vh 4vw;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,.13)}
+    .innov>div:nth-child(2){background:#1b4d3d}
+    .innov>div:nth-child(3){background:#21452f}
+    .innov .word{font:800 clamp(50px,5vw,100px)/.95 var(--display);color:var(--leaf);margin-bottom:4vh}
+    .innov p{font-size:clamp(16px,1.25vw,24px);line-height:1.7;color:#d1e0d8}
+
+    /* gates */
+    .gates{display:grid;grid-template-columns:1.05fr .95fr;height:100%}
+    .gates .ask{padding:7vh 5vw;background:#f3e5dc}
+    .gates .go{padding:7vh 5vw;background:#dce8d9}
+    .gate-list{margin-top:4vh;display:grid;gap:12px}
+    .gate{display:grid;grid-template-columns:80px 1fr;background:rgba(255,255,255,.72);min-height:11vh}
+    .gate b{display:flex;align-items:center;justify-content:center;font:800 22px var(--display);background:var(--clay);color:white}
+    .go .gate b{background:var(--forest)}
+    .gate span{padding:1.3vw;font-size:clamp(15px,1.12vw,22px);line-height:1.55}
+
+    /* readiness */
+    .ready{display:grid;grid-template-columns:1fr 1.12fr}
+    .ready-copy{padding:7vh 5vw;display:flex;flex-direction:column;justify-content:center}
+    .ready-visual{background:#dfe7d7;padding:4vh 3vw;display:flex;align-items:center;justify-content:center}
+    .ready-visual img{width:92%;height:78%;object-fit:contain;filter:drop-shadow(0 28px 30px rgba(20,59,47,.18))}
+    .statusline{display:grid;grid-template-columns:140px 1fr;gap:15px;padding:16px 0;border-bottom:1px solid var(--line);font-size:clamp(15px,1.1vw,22px)}
+    .statusline b{color:var(--forest)}.statusline.wait b{color:var(--clay)}
+
+    /* timeline */
+    .timeline{display:grid;grid-template-columns:repeat(5,1fr);margin-top:7vh;position:relative}
+    .timeline:before{content:"";position:absolute;top:30px;left:4%;right:4%;height:5px;background:linear-gradient(90deg,var(--forest),var(--leaf),var(--clay))}
+    .time{padding:75px 1.5vw 0;position:relative}
+    .time:before{content:"";position:absolute;top:12px;left:1.5vw;width:38px;height:38px;border-radius:50%;background:var(--forest);border:9px solid var(--paper)}
+    .time:nth-child(even):before{background:var(--clay)}
+    .time b{font:800 clamp(19px,1.5vw,30px) var(--display);display:block;margin-bottom:12px}
+    .time p{font-size:clamp(12px,.9vw,17px);line-height:1.6;color:var(--muted)}
+
+    /* outputs */
+    .outputs{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:1px;background:var(--line);height:68vh;margin-top:3vh}
+    .output{background:white;padding:3vw;display:flex;flex-direction:column;justify-content:space-between}
+    .output:first-child{background:var(--forest);color:white}
+    .output .num{font:800 clamp(70px,8vw,150px)/1 var(--display);color:var(--leaf)}
+    .output h3{font-size:clamp(24px,2vw,40px);margin:0 0 18px}
+    .output p{font-size:clamp(14px,1.05vw,20px);line-height:1.65;color:var(--muted)}
+    .output:first-child p{color:#c8d9d0}
+
+    /* close */
+    .close{background:var(--forest);color:white;display:grid;grid-template-columns:1.08fr .92fr}
+    .close-copy{padding:8vh 6vw;display:flex;flex-direction:column;justify-content:center}
+    .close-img{position:relative;background:#dfe7d8;display:flex;align-items:center;justify-content:center}
+    .close-img img{width:88%;height:78%;object-fit:contain;filter:drop-shadow(0 24px 30px rgba(0,0,0,.18))}
+    .close .display{font-size:clamp(46px,3.75vw,72px)}
+    .close .chapter{color:#b9d58b}
+    .close .lede{color:#a9c1b5}
+
+    /* Magic UI-inspired motion: one quiet reveal + one pointer-reactive surface */
+    .blur-fade{opacity:0;filter:blur(10px);transform:translateY(14px)}
+    .slide.active .blur-fade{animation:blurFade .62s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--delay,0ms)}
+    @keyframes blurFade{to{opacity:1;filter:blur(0);transform:none}}
+    .magic-card{position:relative;overflow:hidden;isolation:isolate}
+    .magic-card:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(174,202,99,.22),transparent 44%);opacity:.2;transition:opacity .25s}
+    .magic-card:hover:after,.magic-card:focus-within:after{opacity:1}
+
+    /* field storyboard */
+    .story-slide.active{display:block;background:#eef2e9}
+    .story-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:5vw;align-items:end}
+    .story-head .title{max-width:850px}
+    .story-head .lede{margin:0 0 .6vh}
+    .storyboard{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:4vh;list-style:none;padding:0;counter-reset:story}
+    .storyboard li{background:white;border:1px solid var(--line);min-width:0}
+    .storyboard figure{margin:0;height:58vh;display:grid;grid-template-rows:1fr auto}
+    .storyboard img{width:100%;height:100%;object-fit:cover;min-height:0}
+    .storyboard figcaption{padding:18px 20px 20px;font:700 clamp(17px,1.2vw,24px) var(--display);display:flex;align-items:center;gap:13px}
+    .storyboard figcaption b{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--forest);color:white;font-size:14px;flex:0 0 auto}
+    .storyboard li:nth-child(3) figcaption b,.storyboard li:nth-child(4) figcaption b{background:var(--clay)}
+
+    /* detailed literature evidence */
+    .lit-deep.active{display:block;background:#f4f7f1}
+    .lit-deep.darklit{background:#0c291f;color:white}
+    .lit-deep-head{display:grid;grid-template-columns:.75fr 1.25fr;gap:5vw;align-items:end}
+    .lit-deep .title{font-size:clamp(36px,3.2vw,62px)}
+    .lit-deep-head .lede{margin:0}
+    .lit-deep.darklit .lede{color:#c4d6cc}
+    .lit-evidence-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4vh}
+    .lit-card{min-height:38vh;padding:1.6vw;background:white;border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between}
+    .darklit .lit-card{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.16)}
+    .lit-card h3{font:750 clamp(23px,1.75vw,34px)/1.25 var(--display);margin:0 0 2vh}
+    .lit-card p{font-size:clamp(13px,.91vw,17px);line-height:1.62;margin:0;color:var(--muted)}
+    .darklit .lit-card p{color:#c0d2c9}
+    .evidence-tag{font:800 12px var(--display);letter-spacing:.08em;color:var(--clay);margin-bottom:12px}
+    .cite{margin-top:2vh;padding-top:14px;border-top:1px solid var(--line);font-size:clamp(11px,.72vw,14px);line-height:1.55;color:#6d7d74;overflow-wrap:anywhere}
+    .darklit .cite{border-color:rgba(255,255,255,.14);color:#94ada1}
+    .lit-verdict{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:2vh}
+    .lit-verdict>div{padding:1.35vw;background:#e1e9db;border-left:8px solid var(--forest)}
+    .lit-verdict>div:last-child{background:#f3e4dc;border-color:var(--clay)}
+    .lit-verdict strong{display:block;font:750 clamp(21px,1.55vw,30px) var(--display);margin-bottom:8px}
+    .lit-verdict span{font-size:clamp(13px,.92vw,18px);line-height:1.6}
+    .darklit .lit-verdict{color:var(--ink)}
+
+    /* interactive research demo */
+    .demo-slide.active{display:block;background:#edf2e8}
+    .animated-grid{background-color:#e4ebdf;background-image:linear-gradient(rgba(20,59,47,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(20,59,47,.055) 1px,transparent 1px);background-size:34px 34px;background-position:0 0;animation:gridDrift 18s linear infinite}
+    @keyframes gridDrift{to{background-position:34px 34px}}
+    .demo-top{display:grid;grid-template-columns:.82fr 1.18fr;gap:5vw;align-items:end}
+    .demo-top .lede{margin:0}
+    .demo-progress{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:2.8vh}
+    .demo-tab{border:0;border-top:4px solid #aab8af;background:rgba(255,255,255,.68);padding:12px 14px;text-align:left;color:var(--muted);cursor:pointer;font:700 clamp(12px,.86vw,16px) var(--display)}
+    .demo-tab[aria-selected="true"]{border-color:var(--clay);background:white;color:var(--forest);box-shadow:0 10px 24px rgba(20,59,47,.08)}
+    .demo-shell{display:grid;grid-template-columns:.86fr 1.14fr;gap:0;height:54vh;margin-top:10px;border:1px solid rgba(20,59,47,.16);box-shadow:0 24px 60px rgba(20,59,47,.12)}
+    .demo-evidence-pane{background:#102f25;color:white;padding:1.6vw;display:grid;grid-template-columns:.78fr 1.22fr;gap:1.5vw;align-items:center}
+    .demo-evidence-pane img{width:100%;height:39vh;object-fit:cover;border:6px solid rgba(255,255,255,.86)}
+    .demo-quote{font:700 clamp(24px,2.1vw,40px)/1.45 var(--display);margin:0 0 2vh}
+    .demo-caption{font-size:clamp(12px,.8vw,15px);color:#a9c0b5;line-height:1.6}
+    .demo-work{background:rgba(255,255,255,.9);padding:1.6vw 2vw;overflow:hidden}
+    .demo-panel{display:none;height:100%}
+    .demo-panel.active{display:flex;flex-direction:column;justify-content:center;animation:blurFade .4s ease both}
+    .demo-panel h3{font:750 clamp(28px,2.2vw,44px) var(--display);margin:0 0 2vh}
+    .demo-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .demo-field{padding:12px 14px;background:#edf2e8;border-left:4px solid var(--forest)}
+    .demo-field b{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}.demo-field span{font-size:clamp(14px,.95vw,18px)}
+    .demo-field.missing{background:#f6e7df;border-color:var(--clay)}
+    .demo-action{align-self:flex-start;border:0;background:var(--forest);color:white;padding:12px 18px;margin-top:18px;font-weight:700;cursor:pointer}
+    .demo-action:hover,.demo-action:focus-visible{background:var(--clay);outline:3px solid rgba(220,108,55,.25)}
+    .judgment-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .judgment-row>div{padding:14px;border:1px solid var(--line);background:white}
+    .judgment-row b{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}.judgment-row strong{font-size:clamp(16px,1.1vw,21px)}
+    .reason-grid{display:grid;grid-template-columns:.72fr 1.35fr .8fr;gap:12px}
+    .reason-col{padding:14px;background:white;border:1px solid var(--line);min-width:0}
+    .reason-col.ai{background:#e1eadb}.reason-col h4{margin:0 0 10px;font-size:clamp(16px,1.15vw,22px)}
+    .reason-col p,.reason-col li{font-size:clamp(12px,.78vw,15px);line-height:1.55}.reason-col ul{padding-left:1.1em;margin:8px 0}
+    .locked{color:var(--clay);font-weight:800;font-size:12px}
+    .demo-disclaimer{position:absolute;left:6vw;bottom:2.2vh;font-size:12px;color:#718078}
+
+    .slide:not(.active){display:none!important}
+    @media(max-aspect-ratio:1/1){
+      .cover,.evidence,.tension,.eye,.ready,.close,.gates{grid-template-columns:1fr}
+      .cover-photo,.evidence .image,.eye-photo,.ready-visual,.close-img{display:none}
+      .grid2,.grid3,.method-strip,.flow,.timeline,.outputs{grid-template-columns:1fr 1fr}
+      .dcs-board{grid-template-columns:1fr;min-height:0}.dcs-object{display:none}.dcs-step{grid-template-columns:34px 82px 1fr}.dcs-step p{display:none}.dcs-boundary{grid-template-columns:1fr}.evidence-rail,.output-proof{grid-template-columns:1fr 1fr}
+      .slide{overflow:auto}.pad{padding:70px 28px}.agenda-track{grid-template-columns:1fr 1fr}
+      .story-head,.lit-deep-head,.demo-top{grid-template-columns:1fr}.storyboard,.lit-evidence-grid{grid-template-columns:1fr 1fr}.demo-shell{grid-template-columns:1fr;height:auto}.demo-evidence-pane{display:none}
+    }
+    @media(prefers-reduced-motion:reduce){.slide.active{animation:none}.active .signal circle,.animated-grid{animation:none}.slide.active .blur-fade{animation:none;opacity:1;filter:none;transform:none}}
+    @media print{
+      html,body{overflow:visible;background:white}.deck{position:static}.slide{position:relative;display:flex!important;width:1920px;height:1080px;page-break-after:always}.controls,.progress,.counter,.hint{display:none}
+    }
+  </style>
+</head>
+<body>
+<main class="deck" id="deck">
+  <section class="slide cover active" data-title="封面">
+    <div class="cover-copy">
+      <div class="cover-kicker">FASBOS 开题答辩</div>
+      <div>
+        <h1 class="cover-title">让田间发现<br>真正抵达决策</h1>
+        <p class="lede">面向田间异常上报与远程研判的跨角色信息支持设计研究——以蕲艾等湖北道地药材种植协作为例</p>
+      </div>
+      <div class="identity">陈柏光　202512061<br>指导老师　胡珊<br>2026 · 开题答辩</div>
+    </div>
+    <div class="cover-photo"><img src="assets/hw-hero-capture.jpg" alt="田间工作者使用 FASBOS 设备记录异常"></div>
+  </section>
+
+  <section class="slide dark pad vcenter" data-title="核心问题">
+    <svg class="signal" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true"><path d="M80 760 C420 580 530 820 850 620 S1350 410 1840 520"/><circle cx="350" cy="655" r="11"/><circle cx="910" cy="590" r="11"/><circle cx="1510" cy="465" r="11"/></svg>
+    <div class="chapter">研究对象</div>
+    <h2 class="display" style="position:relative;z-index:2;max-width:1450px">不是一张照片。<br>而是一条<span style="color:var(--leaf)">信息链</span>。</h2>
+    <p class="lede" style="position:relative;z-index:2;margin-top:5vh">观察者感知 → 表达与结构化 → 管理者初判 → AI 后介入 → 处置与复查</p>
+    <div class="source">核心命题：脚手架能否减少跨角色信息衰减，并改善管理者分诊？</div>
+  </section>
+
+  <section class="slide pad agenda" data-title="汇报结构">
+    <div><div class="chapter">汇报结构</div><h2 class="title" style="margin-top:20px">从问题，走向可执行的研究计划</h2></div>
+    <div class="agenda-track">
+      <div class="agenda-item"><i>01</i><h3>背景与意义</h3><p>为什么农业 AI 的最后一公里发生在组织协作中</p></div>
+      <div class="agenda-item"><i>02</i><h3>文献综述</h3><p>已有证据能说明什么，仍缺什么</p></div>
+      <div class="agenda-item"><i>03</i><h3>研究方法</h3><p>DCS、实验条件、指标与统计</p></div>
+      <div class="agenda-item"><i>04</i><h3>创新与难点</h3><p>可辨识贡献与正式采集门禁</p></div>
+      <div class="agenda-item"><i>05</i><h3>项目计划</h3><p>当前就绪度、依赖与时间窗口</p></div>
+      <div class="agenda-item"><i>06</i><h3>项目预期</h3><p>论文、方法、系统与规范</p></div>
+    </div>
+  </section>
+
+  <section class="slide section-photo" style="background-image:url('assets/field-wide.jpg')" data-title="背景与意义">
+    <div class="section-copy"><div class="chapter">第一部分</div><h2 class="display">选题背景<br>与意义</h2><p class="lede">农业 AI 的“最后一公里”，发生在组织协作中。</p></div><div class="section-index">01</div>
+  </section>
+
+  <section class="slide evidence" data-title="现场没有一起抵达">
+    <div class="image"><img src="assets/field-inspection-hand.jpg" alt="真实田间巡查现场"></div>
+    <div class="copy"><div class="chapter">现实断点</div><h2 class="title" style="margin-top:24px">照片抵达了管理者，<br>现场却没有。</h2><ul class="lost-list"><li>位置</li><li>范围</li><li>近期变化</li><li>处置历史</li></ul><p class="lede">“拍到了”不等于“可以判断”。</p></div>
+    <div class="source">来源：第一篇论文大纲 v3.2 §3.2–3.4；FASBOS 田野材料</div>
+  </section>
+
+  <section class="slide pad story-slide" data-title="田间故事板">
+    <div class="story-head blur-fade"><div><div class="chapter">故事板 · 情景示意</div><h2 class="title" style="margin-top:18px">一次普通上报，<br>如何在交接中失真？</h2></div><p class="lede">问题不是工人没有看见，而是现场知识被压缩成一张照片和一句消息。</p></div>
+    <ol class="storyboard">
+      <li class="magic-card blur-fade" style="--delay:80ms"><figure><img src="assets/story-01-notice.webp" alt="田间人员查看异常叶片"><figcaption><b>01</b>发现异常</figcaption></figure></li>
+      <li class="magic-card blur-fade" style="--delay:150ms"><figure><img src="assets/story-02-report.webp" alt="田间人员拍照并发送简短消息"><figcaption><b>02</b>拍照上报</figcaption></figure></li>
+      <li class="magic-card blur-fade" style="--delay:220ms"><figure><img src="assets/story-03-receive.webp" alt="管理者收到信息却缺少现场上下文"><figcaption><b>03</b>信息不足，只能猜</figcaption></figure></li>
+      <li class="magic-card blur-fade" style="--delay:290ms"><figure><img src="assets/story-04-spread.webp" alt="处理后异常仍在扩展"><figcaption><b>04</b>处理之后，问题还在</figcaption></figure></li>
+    </ol>
+    <div class="source">故事板来源：FASBOS Research Web 第二节 Field Problem；情景示意，非真实对话或已验证结果。</div>
+  </section>
+
+  <section class="slide tension" data-title="技术与组织">
+    <div class="left"><div class="chapter">技术中心主义</div><h2 class="title" style="margin-top:25px">机器通常优化</h2><ul><li>识别准确率</li><li>检测速度</li><li>覆盖面积</li><li>路径与喷洒效率</li></ul></div>
+    <div class="right"><div class="chapter">组织协作</div><h2 class="title" style="margin-top:25px;color:white">现场真正需要</h2><ul><li>把模糊观察说清楚</li><li>保留空间、时间与历史</li><li>知道何时升级</li><li>明确由谁负责</li></ul><p class="lede">研究价值：把农业 HCI 的评价对象，从单点识别扩展到信息保真与分诊质量。</p></div>
+  </section>
+
+  <section class="slide black pad vcenter" data-title="文献综述"><div class="chapter">第二部分</div><h2 class="display">文献综述<br>与评析</h2><p class="lede">文献能支持设计机制，不能替代农业异常的直接比较。</p><div class="big-number" style="position:absolute;right:6vw;bottom:7vh;color:rgba(174,202,99,.22)">02</div></section>
+
+  <section class="slide pad" data-title="四条证据线">
+    <div class="chapter">已有证据</div><h2 class="title" style="margin-top:20px">四条证据线，指向同一个问题</h2>
+    <div class="lit-map">
+      <div class="lit"><div class="node">记</div><h3>记录端</h3><p>数字技能、设备可及性与表达负担共同影响记录质量；结构化提示提高字段覆盖，也可能增加确认成本。</p></div>
+      <div class="lit"><div class="node">解</div><h3>理解端</h3><p>地块、天气、历史与比较基线有助于解释异常，但现有证据无法确定最小充分组合。</p></div>
+      <div class="lit"><div class="node">判</div><h3>判断端</h3><p>解释可能降低、无效或增加过度依赖；AI 前判与 AI 后修订的顺序必须进入实验。</p></div>
+      <div class="lit"><div class="node">闭</div><h3>协作端</h3><p>责任、期限、补证与复查均有局部证据，却尚未连成同一农业异常闭环。</p></div>
+    </div>
+    <div class="source">来源：paper1_related_work_outline_v2.md §1–3</div>
+  </section>
+
+  <section class="slide pad lit-deep" data-title="记录端证据">
+    <div class="lit-deep-head blur-fade"><div><div class="chapter">证据线 1 · 可交接记录</div><h2 class="title" style="margin-top:18px">结构化可以补字段，<br>也可能把负担换个位置。</h2></div><p class="lede">农业现场已有数字技能、工具—任务错配与替代性记录的直接证据；真正缺少的，是异常上报脚手架的受控比较。</p></div>
+    <div class="lit-evidence-grid">
+      <article class="lit-card magic-card blur-fade" style="--delay:90ms"><div><div class="evidence-tag">农业现场直接证据</div><h3>“会用”不能被人口属性简化。</h3><p>坦桑尼亚样本中，46.2% 的参与者对数字技术感到舒适，53.8% 需要帮助；年龄与性别并不能简单解释困难。</p></div><div class="cite">3613904.3642099::C012/C014/C042，PDF p5, p11</div></article>
+      <article class="lit-card magic-card blur-fade" style="--delay:160ms"><div><div class="evidence-tag">完整性 ↔ 自然度</div><h3>提示更结构，并不等于表达更好。</h3><p>结构化提示更常覆盖必需问题，但描述式提示更容易出现认可与致谢；完整性、自然度与跑题风险存在权衡。</p></div><div class="cite">3637364::C009/C017/C023/C044/C045，PDF p1, p13–20</div></article>
+      <article class="lit-card magic-card blur-fade" style="--delay:230ms"><div><div class="evidence-tag">工具—实践错配</div><h3>农户已在用自己的方法补偿工具。</h3><p>表格需要亲友协助，地图难以表达精细空间关系，手机照片时间戳则成为替代记录。这些实践尚未证明跨角色交接已改善。</p></div><div class="cite">2602.13119v1::C007/C009/C010/C034/C035，PDF p11–13, p22–23</div></article>
+    </div>
+    <div class="lit-verdict"><div><strong>文献直接支持</strong><span>数字技能、表达、转写错误与工具适配是真实问题。</span></div><div><strong>本研究需要检验</strong><span>自由证据、视觉填槽和对话填槽如何同时改变遗漏、负担和分诊可用性。</span></div></div>
+  </section>
+
+  <section class="slide pad lit-deep" data-title="情境端证据">
+    <div class="lit-deep-head blur-fade"><div><div class="chapter">证据线 2 · 情境化理解</div><h2 class="title" style="margin-top:18px">情境的价值，<br>是建立关系而不是增加信息。</h2></div><p class="lede">位置、天气、历史与空间比较只有在参照对象、时间窗口和来源明确时，才可能帮助远程研判。</p></div>
+    <div class="lit-evidence-grid">
+      <article class="lit-card magic-card"><div><div class="evidence-tag">可比基线</div><h3>单点数据不一定产生异常理解。</h3><p>太阳能灌溉案例中，同容量设备的每日产能偏离可帮助发现灰尘、遮阴、故障或损失；每月人工抄表本身却没有自然形成异常检测。</p></div><div class="cite">2604.09395v1::C019/C020/C021/C023/C025，PDF p3–4</div></article>
+      <article class="lit-card magic-card"><div><div class="evidence-tag">系统实现 ≠ 组件增益</div><h3>知识库和反馈可被整合，但未必被证明有效。</h3><p>Farmer.Chat 整合情境知识库、位置化内容与持续反馈，但没有通过组件消融分离各类上下文的独立效果。</p></div><div class="cite">Farmer.Chat：2409.08916v2::C004/C006，PDF p4–8</div></article>
+      <article class="lit-card magic-card"><div><div class="evidence-tag">回退时间</div><h3>有人工通道，不等于及时接管。</h3><p>ASHABot 部署中，人工首次响应约 30.75 小时，形成共识约 58.59 小时。即时判断耗时和等待专家的耗时必须分开。</p></div><div class="cite">ASHABot：3706598.3713680::C014/C016/C017，PDF p8</div></article>
+    </div>
+    <div class="lit-verdict"><div><strong>文献直接支持</strong><span>特定的比较基线和反馈关系能让偏离变得可见。</span></div><div><strong>仍然不能声称</strong><span>天气、地块史、空间邻近和照片的最小充分组合尚未被当前资料确定。</span></div></div>
+  </section>
+
+  <section class="slide pad lit-deep darklit" data-title="AI 判断证据">
+    <div class="lit-deep-head blur-fade"><div><div class="chapter">证据线 3 · 判断权</div><h2 class="title" style="margin-top:18px;color:white">解释不是稳定的去偏机制。</h2></div><p class="lede">有时降低过度依赖，有时没有变化，有时反而增加依赖。关键变量是任务难度、呈现顺序、解释形式和 AI 正误。</p></div>
+    <div class="lit-evidence-grid">
+      <article class="lit-card magic-card"><div><div class="evidence-tag">顺序是实验变量</div><h3>先独立判断，才能观察 AI 改变了什么。</h3><p>一步式与 AI 一致率为 91%，两步式为 89%；但两步式中仅 70/10,560 个判断在查看 AI 后发生改变，完成时间无显著差异。</p></div><div class="cite">3531146.3533193::C008/C015/C023，PDF p6, p8</div></article>
+      <article class="lit-card magic-card"><div><div class="evidence-tag">结果方向不一致</div><h3>“有理由”不等于“更可靠”。</h3><p>易解析高亮解释在特定困难任务中可降低过度依赖；中等难度中可能无效；另有实验发现 XAI 条件过度依赖更高。</p></div><div class="cite">3579605::C018/C023/C030/C038；3772318.3790632::C007</div></article>
+      <article class="lit-card magic-card"><div><div class="evidence-tag">有益摩擦</div><h3>更好的表现，可能伴随更差的体验。</h3><p>认知强迫与引导反思可能改善适当依赖，但表现最好的条件也可能最不受偏好、信任较低且更难。</p></div><div class="cite">3449287::C038/C041；3772318.3790632::C011；3706598.3713423::C017/C023/C035</div></article>
+    </div>
+    <div class="lit-verdict"><div><strong>因此采用 commit-first</strong><span>Stage A 冻结管理者初判，Stage B 才显示冻结辅助信息；修订追加而不覆盖。</span></div><div><strong>但这是待验证设计</strong><span>顺序、反思与解释的作用不能被写成 FASBOS 已证实的效果。</span></div></div>
+  </section>
+
+  <section class="slide pad lit-deep" data-title="闭环协作证据">
+    <div class="lit-deep-head blur-fade"><div><div class="chapter">证据线 4 · 协作闭环</div><h2 class="title" style="margin-top:18px">每个回退点，<br>都可能成为新的断点。</h2></div><p class="lede">责任、期限、同伴比较、人工升级、分步执行和共享输出都有局部证据；当前资料仍未将它们连成同一农业异常的端到端验证。</p></div>
+    <div class="lit-evidence-grid">
+      <article class="lit-card magic-card"><div><div class="evidence-tag">责任可见</div><h3>问题必须连接行动、所有者和期限。</h3><p>农业安全学习圈会记录风险、行动、责任人、期限和完成状态；太阳能灌溉案例也显示数据与维护经验会进入社区协作。</p></div><div class="cite">paper-150-R05；2604.09395v1::C020/C021/C025/C037</div></article>
+      <article class="lit-card magic-card"><div><div class="evidence-tag">回退可用</div><h3>架构里“有升级”，不等于运营中“能升级”。</h3><p>复杂协作应允许暂停、补证、重分配与重新规划；但如果没有明确响应责任和超时机制，人工升级可能变成等待与责任漂移。</p></div><div class="cite">paper-189-M01/L03；3706598.3713680::C016/C017</div></article>
+      <article class="lit-card magic-card"><div><div class="evidence-tag">共享输出 ≠ 共享控制</div><h3>AI 输出会进入现有的作者权与协调规范。</h3><p>多人—AI 协作中，建议可被不同成员接受或修改；因此必须明确谁可以查看、修改、接受和关闭结果，而不是把“共享”当成权限答案。</p></div><div class="cite">paper-188-M02/AI01，跨场景迁移需谨慎</div></article>
+    </div>
+    <div class="lit-verdict"><div><strong>当前缺口</strong><span>上报可用性、分诊质量、任务响应、执行证据与复查结论尚未在同一工作流中被连接。</span></div><div><strong>边界声明</strong><span>这一缺失判断仅限于当前 52 篇资料范围，不升级为“领域内没有研究”。</span></div></div>
+  </section>
+
+  <section class="slide black pad gap-slide" data-title="研究缺口">
+    <div class="chapter">研究缺口</div><h2 class="title" style="margin-top:20px;color:white">已知机制仍是碎片，缺少一条完整证据链</h2>
+    <div class="gapchain">
+      <div class="gapnode"><strong>表达负担</strong><p class="lede">工人能否低负荷地把异常说清楚</p></div><div class="gaparrow">→</div>
+      <div class="gapnode"><strong>信息保真</strong><p class="lede">字段是否跨角色保留诊断价值</p></div><div class="gaparrow broken">╱</div>
+      <div class="gapnode"><strong>分诊判断</strong><p class="lede">管理者是否作出更适当的处置与升级</p></div>
+    </div>
+    <div class="evidence-rail"><div><b>研究 1 · 上游</b><span>比较 C0/C1/C2 对表达负担与 Core-IAR 的影响。</span></div><div><b>冻结交接物</b><span>把真实上报转成后续实验唯一输入，切断同步互动干扰。</span></div><div><b>研究 2 · 下游</b><span>检验信息质量能否转化为处置、升级与判断过程差异。</span></div></div>
+    <p class="quote" style="margin-top:3.2vh;color:var(--leaf)">农业 HCI 尚未把三者放进同一受控链路。</p>
+  </section>
+
+  <section class="slide dark pad vcenter" data-title="研究思路与方法"><div class="chapter">第三部分</div><h2 class="display">研究思路<br>与方法</h2><p class="lede">以分布式认知支架为框架，以链式异步协同实验为验证路径。</p><div class="big-number" style="position:absolute;right:6vw;bottom:7vh;color:rgba(174,202,99,.2)">03</div></section>
+
+  <section class="slide pad dcs-slide" data-title="DCS 机制">
+    <div class="chapter">作用机制</div><h2 class="title" style="margin-top:18px">DCS 把碎片化观察转化为可交接的信息对象</h2>
+    <div class="dcs-board blur-fade">
+      <div class="dcs-chain">
+        <div class="dcs-step"><span class="idx">01</span><img src="assets/method-observe.webp"><h3>现场观察<span>OBSERVE</span></h3><p>允许“叶子不太对”这样的模糊起点，保留人的不确定性与原始证据。</p></div>
+        <div class="dcs-step"><span class="idx">02</span><img src="assets/method-context.webp"><h3>沟通模板化<span>ARTICULATE</span></h3><p>通过等粒度提示补齐症状、范围、位置；Agent 只重组已表达内容。</p></div>
+        <div class="dcs-step"><span class="idx">03</span><img src="assets/method-judgment.webp"><h3>情境封装<span>HAND OVER</span></h3><p>把照片、原话、字段、缺失项和来源标记封装成同一可交接对象。</p></div>
+        <div class="dcs-step"><span class="idx">04</span><img src="assets/method-reason.webp"><h3>推理外化<span>COMMIT → REVIEW</span></h3><p>管理者先提交 Stage A 初判，再查看冻结 AI，留下修订与责任轨迹。</p></div>
+      </div>
+      <aside class="dcs-object magic-card">
+        <div class="chapter" style="color:var(--leaf)">交接对象剖面</div>
+        <h3>不是“更完整的表单”<br>而是可追溯的信息包</h3>
+        <div class="object-field"><b>原始证据</b><span>现场照片＋工人原话</span></div>
+        <div class="object-field"><b>结构字段</b><span>症状／范围／位置／变化</span></div>
+        <div class="object-field"><b>缺失状态</b><span>明确显示“未表达”，不自动补全</span></div>
+        <div class="object-field"><b>来源轨迹</b><span>slot／voice／mark／auto／none</span></div>
+        <div class="object-trace">跨角色传递时，内容、来源与不确定性一起移动；这才是 DCS 的最小设计单元。</div>
+      </aside>
+    </div>
+    <div class="dcs-boundary"><b>实验边界</b><p>工人端只组织人的表达；照片 AI 仅在管理者 Stage B 后介入，不回填上报字段。</p><span class="rule">Option A · commit-first</span></div>
+  </section>
+
+  <section class="slide pad demo-slide" data-title="FASBOS 交互 Demo">
+    <div class="demo-top blur-fade"><div><div class="chapter">原型演示 · 示例数据</div><h2 class="title" style="margin-top:16px">同一份现场观察，<br>如何进入人的判断？</h2></div><p class="lede">点击四个阶段体验研究逻辑。关键不是系统直接给出答案，而是保留原始观察、缺失项、初判与修订轨迹。</p></div>
+    <div class="demo-progress" role="tablist" aria-label="Demo 阶段">
+      <button class="demo-tab" role="tab" aria-selected="true" data-demo-stage="observe">01　现场观察</button>
+      <button class="demo-tab" role="tab" aria-selected="false" data-demo-stage="context">02　核对案例</button>
+      <button class="demo-tab" role="tab" aria-selected="false" data-demo-stage="judgment">03　先作初判</button>
+      <button class="demo-tab" role="tab" aria-selected="false" data-demo-stage="reasoning">04　共同推理</button>
+    </div>
+    <div class="demo-shell animated-grid">
+      <aside class="demo-evidence-pane"><img src="assets/demo-case-d01.jpg" alt="手托起蕲艾嫩梢的真实田间示例照片"><div><p class="demo-quote">“这一片叶子好像不太对。”</p><p class="demo-caption">观察者原话 · 示例材料<br>真实田间照片，不是正式实验刺激。</p></div></aside>
+      <div class="demo-work">
+        <section class="demo-panel active" data-demo-panel="observe"><h3>先保留人看到的东西</h3><div class="demo-fields"><div class="demo-field"><b>原话</b><span>这一片叶子好像不太对。</span></div><div class="demo-field"><b>照片</b><span>叶片卷曲变形，附着白色絮状物</span></div><div class="demo-field missing"><b>尚未提供</b><span>范围、位置、近期变化</span></div><div class="demo-field"><b>来源</b><span>原话 / 照片，不自动补全</span></div></div><button class="demo-action" data-demo-next="context">整理这份观察</button></section>
+        <section class="demo-panel" data-demo-panel="context"><h3>整理已表达内容，把未知留为未知</h3><div class="demo-fields"><div class="demo-field"><b>描述 · 原话</b><span>这一片叶子好像不太对。</span></div><div class="demo-field"><b>范围 · 回答</b><span>局部（一小片）</span></div><div class="demo-field"><b>位置 · 回答</b><span>靠近水渠</span></div><div class="demo-field"><b>田块 / 时间 · 自动</b><span>示例田块 · 08:42</span></div><div class="demo-field missing"><b>近期变化 · 待补</b><span>未提供，不由 Agent 猜测</span></div><div class="demo-field"><b>位置图</b><span>靠近水渠的人工参照</span></div></div><button class="demo-action" data-demo-next="judgment">交给管理者</button></section>
+        <section class="demo-panel" data-demo-panel="judgment"><h3>Stage A：管理者先独立提交</h3><div class="judgment-row"><div><b>可能类别</b><strong>虫害</strong></div><div><b>风险程度</b><strong>较高</strong></div><div><b>专业支持</b><strong>现在寻求支持</strong></div></div><p class="lede" style="font-size:18px;margin:2vh 0 0">初判将与置信、理由、证据查看记录和时间戳一起冻结。Stage B 之前，服务端不下发 VLM 建议。</p><button class="demo-action" data-demo-next="reasoning">提交初判，再看辅助信息</button></section>
+        <section class="demo-panel" data-demo-panel="reasoning"><h3>Stage B：对照初判、辅助信息与终判</h3><div class="reason-grid"><div class="reason-col"><div class="locked">已提交 · 不可覆盖</div><h4>初步判断</h4><p>虫害 · 较高风险<br>现在寻求专业支持</p></div><div class="reason-col ai"><h4>预先生成的辅助信息</h4><p><strong>可能方向：</strong>虫害，形态接近瘿蚊所致叶瘿。</p><ul><li>仍需确认是否成片扩展</li><li>剥开白色结构查看是否有虫室</li><li>补充近期施肥、用药与天气变化</li></ul></div><div class="reason-col"><h4>最终决定</h4><p>保持或修改初判，并追加理由；初判仍保留在完整轨迹中。</p></div></div><button class="demo-action" data-demo-next="observe">重新体验</button></section>
+      </div>
+    </div>
+    <div class="demo-disclaimer">来源：FASBOS Research Web Interactive Demo。研究原型 · 预设案例 · 不连接实时 AI；辅助方向尚待农学复核，不是处置建议。</div>
+  </section>
+
+  <section class="slide pad conditions" data-title="三种实验条件">
+    <div class="chapter">自变量控制</div><h2 class="title" style="margin-top:18px">只改变引导通道，不改变候选内容与粒度</h2>
+    <div class="condition-stage">
+      <div class="lanes">
+        <div class="lane"><div class="code">C0</div><div><strong>原始证据</strong>照片 + 自由文字/录音；不转写、不结构化</div><div><strong>管理者看到</strong>自由照片与自由描述</div><div><strong>对照意义</strong>当前实践基线</div></div>
+        <div class="lane"><div class="code">C1</div><div><strong>视觉填槽</strong>照片 + picker：症状 / 范围 / 位置</div><div><strong>管理者看到</strong>固定字段表</div><div><strong>对照意义</strong>结构化本身的价值</div></div>
+        <div class="lane"><div class="code">C2</div><div><strong>对话填槽</strong>WoZ 转译；语音回读确认</div><div><strong>管理者看到</strong>情境化案例；AI 呈现待协议冻结</div><div><strong>对照意义</strong>完整 DCS 的额外增益</div></div>
+      </div>
+      <div class="condition-visual"><div class="phone-stack"><img src="assets/screen-01-home.png" alt="FASBOS 首页"><img src="assets/screen-02-voice.png" alt="FASBOS 语音上报"><img src="assets/screen-05-map.png" alt="FASBOS 地图定位"></div></div>
+    </div>
+    <div class="source">来源：实验计划眼动修订版 §2；实验原型实施计划 v1.4 §2；AGENTS.md D1/D4</div>
+  </section>
+
+  <section class="slide pad" data-title="实验链">
+    <div class="chapter">链式异步协同实验</div><h2 class="title" style="margin-top:18px">研究 1 生成真实上报，研究 2 使用冻结上报完成分诊</h2>
+    <div class="flow">
+      <div class="flowstep" data-n="1"><h3>刺激与金标准</h3><p>专家标注异常、风险、Hard/Soft 与 Signal/Noise</p></div>
+      <div class="flowstep" data-n="2"><h3>观察者上报</h3><p>14–18 人；组内 C0/C1/C2；Latin Square</p></div>
+      <div class="flowstep" data-n="3"><h3>案例池冻结</h3><p>约 24 刺激 × 3 版本；同一管理者不重复刺激</p></div>
+      <div class="flowstep" data-n="4"><h3>管理者分诊</h3><p>12–16 人，争取 ≥20；固定 PC 与眼动</p></div>
+      <div class="flowstep" data-n="5"><h3>专家盲评</h3><p>处置适当性、升级合理性与机制解释</p></div>
+    </div>
+    <div class="source">来源：实验计划眼动修订版 §3–6；设计讨论纪要 §2.1–2.3</div>
+  </section>
+
+  <section class="slide pad" data-title="核心指标">
+    <div class="chapter">测量体系</div><h2 class="title" style="margin-top:18px">上游信息质量，必须与下游决策质量连起来</h2>
+    <div class="metrics">
+      <div class="metric"><div class="metric-code">P1</div><h3>Core-IAR</h3><p>缺失 Hard Required 字段数 / 总数。按内容编码，不按槽位计数；直接衡量信息在链路中的损耗。</p></div>
+      <div class="metric"><div class="metric-code">P2</div><h3>分诊质量</h3><p>升级合理性 + 0–4 处置适当性量规。</p></div>
+      <div class="metric"><div class="metric-code">P3</div><h3>可分析参与率</h3><p>Hard Required 覆盖 ≥50%，且含视觉症状或空间参照。</p></div>
+      <div class="metric"><div class="metric-code">RECE</div><h3>推理外化修正</h3><p>比较 C2 Stage A 与 Stage B 的处置变化。</p></div>
+      <div class="metric"><div class="metric-code">SDT</div><h3>升级阈值</h3><p>估计 d′ 与 criterion c，区分敏感性和偏置。</p></div>
+    </div>
+  </section>
+
+  <section class="slide eye" data-title="眼动方法">
+    <div class="eye-photo"><img src="assets/eye-device.jpg" alt="眼动采集过程视觉示意"><div class="reticle"></div></div>
+    <div class="eye-copy"><div class="chapter">过程证据</div><h2 class="title" style="color:white;margin-top:24px">眼动解释“如何判断”，<br>不替代主结论</h2><div class="specs"><div class="spec"><b>120 Hz</b><span>眼镜式眼动仪</span></div><div class="spec"><b>9 点</b><span>校准，每 8 trial 验证</span></div><div class="spec"><b>64 px</b><span>AOI 最小间距</span></div><div class="spec"><b>33–67 ms</b><span>行为日志对齐精度</span></div></div><p class="lede" style="margin-top:5vh">有效采样率 &lt;75% 则降级或取消；设备不稳定不影响主实验成立。</p></div>
+  </section>
+
+  <section class="slide pad" data-title="统计分析">
+    <div class="chapter">分析策略</div><h2 class="title" style="margin-top:18px">混合模型与效应量为主，不用 trial 行数冒充样本量</h2>
+    <div class="analysis-grid">
+      <div class="analysis-row"><b>条件 → IAR</b><div>Beta / Binomial GLMM；C0–C1、C1–C2；被试、刺激、上报来源随机效应。</div></div>
+      <div class="analysis-row"><b>IAR → 分诊</b><div>LME / Ordinal GLMM；报告效应量与 95% CI，控制异常类型、经验与素养。</div></div>
+      <div class="analysis-row"><b>链式关联</b><div>Bootstrap 间接效应 5000 次；不在小样本聚类结构上强行使用 SEM。</div></div>
+      <div class="analysis-row"><b>阈值与修订</b><div>probit-GLMM 估计 d′/c；RECE 与适当依赖 2×2；控制 Trial_Order。</div></div>
+    </div>
+    <div class="source">来源：实验计划眼动修订版 §8</div>
+  </section>
+
+  <section class="slide black pad vcenter" data-title="创新与难点"><div class="chapter">第四部分</div><h2 class="display">创新点<br>与难点</h2><p class="lede">创新落在可辨识的贡献上，难点转化为正式采集门禁。</p><div class="big-number" style="position:absolute;right:6vw;bottom:7vh;color:rgba(174,202,99,.2)">04</div></section>
+
+  <section class="slide dark" data-title="三类创新"><div class="innov"><div><div class="word">保真</div><h2>理论创新</h2><p>把分布式认知、共同基础与边界物件转化为 DCS，让跨角色信息保真与责任分摊成为可设计对象。</p></div><div><div class="word">损耗</div><h2>方法创新</h2><p>用 Core-IAR 评价信息在组织链中的损耗，并以内容编码、人机分账与 within-C0 检验避免循环论证。</p></div><div><div class="word">承诺</div><h2>系统创新</h2><p>WoZ 保留原话，Stage A 先承诺，Stage B 再揭示冻结 AI；provenance 与事件日志支持审计。</p></div></div></section>
+
+  <section class="slide gates" data-title="研究决策门">
+    <div class="ask"><div class="chapter" style="color:var(--clay)">导师需要裁定</div><h2 class="title" style="margin-top:22px">G1–G4：冻结实验含义</h2><div class="gate-list"><div class="gate"><b>G1</b><span>管理者 AI 因子：仅 C2 双阶段，还是三条件统一双阶段？</span></div><div class="gate"><b>G2</b><span>天气、历史与地图是否在三条件中恒定呈现？</span></div><div class="gate"><b>G3</b><span>作物范围与管理者熟悉度放在设计层还是分析层？</span></div><div class="gate"><b>G4</b><span>部署研究是否进入第一篇论文？</span></div></div></div>
+    <div class="go"><div class="chapter">裁定前可推进</div><h2 class="title" style="margin-top:22px">不改变实验含义的地基</h2><div class="gate-list"><div class="gate"><b>01</b><span>provenance 五档与双重预检查</span></div><div class="gate"><b>02</b><span>合作社、田块、作物与材料档案</span></div><div class="gate"><b>03</b><span>正射图定位与来源追踪验证</span></div><div class="gate"><b>04</b><span>WoZ 操作者台与工人端中继</span></div></div></div>
+  </section>
+
+  <section class="slide dark pad vcenter" data-title="项目计划"><div class="chapter">第五部分</div><h2 class="display">项目计划</h2><p class="lede">先完成不改变实验含义的地基，再进入正式协议与采集。</p><div class="big-number" style="position:absolute;right:6vw;bottom:7vh;color:rgba(174,202,99,.2)">05</div></section>
+
+  <section class="slide ready" data-title="当前就绪度">
+    <div class="ready-copy"><div class="chapter">当前就绪度</div><h2 class="title" style="margin-top:22px">原型骨架已建立。<br>研究材料与正式链路仍待完成。</h2><div style="margin-top:4vh"><div class="statusline"><b>已经具备</b><span>数据合同、失败隔离、健康门禁、PC mock 24 trial、commit-first 骨架</span></div><div class="statusline wait"><b>必须补齐</b><span>WoZ 中继、VLM 纯净化、五档 provenance、p3AnalyzablePre、刺激配平、真实云 E2E</span></div></div><p class="lede">代码就绪、mock 通过、云端全绿，是三个不同状态。</p></div>
+    <div class="ready-visual"><img src="assets/fasbos-cover-board.png" alt="FASBOS 多端原型界面总览"></div>
+  </section>
+
+  <section class="slide pad" data-title="项目时间线">
+    <div class="chapter">从开题到论文</div><h2 class="title" style="margin-top:18px">数据采集路径与门禁</h2>
+    <div class="timeline"><div class="time"><b>2026.10<br>研究决策</b><p>核实管理者 N、作物重叠，完成 G1–G4 会谈与修订签字。</p></div><div class="time"><b>2026.10–11<br>技术门禁</b><p>VLM 基线、功效模拟、正射图与刺激来源档案。</p></div><div class="time"><b>2026.11–2027.01<br>仪器完成</b><p>IRB、形成性访谈、分类谱、WoZ 台与配平器。</p></div><div class="time"><b>2027.02–05<br>正式采集</b><p>田间材料、专家标注、工人实验、管理者实验。</p></div><div class="time"><b>2027.06 起<br>分析与写作</b><p>IAR、LME/GLMM、SDT、RECE、眼动与 joint display。</p></div></div>
+    <div class="source">来源：实验原型实施计划 v1.4 §9；设计讨论纪要 §6</div>
+  </section>
+
+  <section class="slide black pad vcenter" data-title="项目预期"><div class="chapter">第六部分</div><h2 class="display">项目预期</h2><p class="lede">交付一套可审计的研究方法，而不只是一个界面原型。</p><div class="big-number" style="position:absolute;right:6vw;bottom:7vh;color:rgba(174,202,99,.2)">06</div></section>
+
+  <section class="slide pad outputs-slide" data-title="预期产出">
+    <div class="chapter">预期产出与判断标准</div><h2 class="title" style="margin-top:18px">成功不是“C2 全面胜出”</h2>
+    <div class="outputs"><div class="output"><div class="num">01</div><div><h3>理论与论文</h3><p>验证 DCS 是否帮助异常信息跨越观察者—管理者边界，并明确何时无效、为什么无效。</p></div></div><div class="output"><div class="num">02</div><div><h3>方法与数据</h3><p>形成 Core/Extended-IAR、P2、P3、RECE、SDT 与质性 joint display 的可复核证据链。</p></div></div><div class="output"><div class="num">03</div><div><h3>系统与规范</h3><p>交付三条件工人端、WoZ 操作者台、固定 PC 分诊台、刺激档案与实验数据合同。</p></div></div></div>
+    <div class="output-proof"><div><b>可解释</b><span>报告效应量、区间、过程证据与失败条件。</span></div><div><b>可复核</b><span>冻结刺激、预注册口径、保存 provenance 与事件日志。</span></div><div><b>可迁移</b><span>沉淀跨角色信息支持原则，而非只交付一个小程序。</span></div></div>
+  </section>
+
+  <section class="slide close" data-title="结束">
+    <div class="close-copy"><div class="chapter">结论</div><h2 class="display">让信息损耗<br>成为可测量的<br>研究对象</h2><p class="lede">FASBOS 不替代农业判断，而是让现场观察更完整地进入组织决策。</p><p style="font-size:clamp(18px,1.3vw,26px);color:var(--leaf)">谢谢各位老师，请批评指正。</p></div>
+    <div class="close-img"><img src="assets/flow-diagram.png" alt="FASBOS 跨角色信息流转图"></div>
+  </section>
+</main>
+
+<div class="controls" aria-label="幻灯片控制"><button id="prev" aria-label="上一页">↑</button><button id="next" aria-label="下一页">↓</button><button id="fs" aria-label="全屏">⛶</button></div>
+<div class="counter" id="counter">1 / 31</div><div class="hint">← → 翻页 · F 全屏 · Home 回到封面</div><div class="progress" id="progress"></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let current=0;
+  const counter=document.getElementById('counter');
+  const progress=document.getElementById('progress');
+  function show(i,push=true){
+    current=Math.max(0,Math.min(slides.length-1,i));
+    slides.forEach((s,n)=>s.classList.toggle('active',n===current));
+    counter.textContent=(current+1)+' / '+slides.length;
+    progress.style.width=((current+1)/slides.length*100)+'%';
+    document.title=(current+1)+'｜'+slides[current].dataset.title+'｜FASBOS 开题答辩';
+    if(push) history.replaceState(null,'','#'+(current+1));
+  }
+  function next(){show(current+1)} function prev(){show(current-1)}
+  document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;
+  document.getElementById('fs').onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
+  function setDemoStage(stage){
+    document.querySelectorAll('[data-demo-stage]').forEach(tab=>tab.setAttribute('aria-selected',String(tab.dataset.demoStage===stage)));
+    document.querySelectorAll('[data-demo-panel]').forEach(panel=>panel.classList.toggle('active',panel.dataset.demoPanel===stage));
+  }
+  document.querySelectorAll('[data-demo-stage]').forEach(tab=>tab.addEventListener('click',()=>setDemoStage(tab.dataset.demoStage)));
+  document.querySelectorAll('[data-demo-next]').forEach(button=>button.addEventListener('click',()=>setDemoStage(button.dataset.demoNext)));
+  document.querySelectorAll('.magic-card').forEach(card=>card.addEventListener('pointermove',event=>{
+    const rect=card.getBoundingClientRect();card.style.setProperty('--mx',(event.clientX-rect.left)+'px');card.style.setProperty('--my',(event.clientY-rect.top)+'px');
+  }));
+  addEventListener('keydown',e=>{
+    if(e.target.closest('button,input,select,textarea,a')) return;
+    if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+    if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();prev()}
+    if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);
+    if(e.key.toLowerCase()==='f')document.getElementById('fs').click();
+  });
+  addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>40){e.deltaY>0?next():prev()}},{passive:true});
+  let touch=0;addEventListener('touchstart',e=>touch=e.changedTouches[0].clientX,{passive:true});addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-touch;if(Math.abs(d)>60)d<0?next():prev()},{passive:true});
+  const hash=parseInt(location.hash.slice(1),10);show(Number.isFinite(hash)?hash-1:0,false);
+</script>
+</body>
+</html>

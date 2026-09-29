@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720">
+<rect width="1000" height="720" fill="#F4F7F2"/>
+<rect x="42" y="42" width="916" height="636" rx="28" fill="#E8F1E6" stroke="#B7D7A8" stroke-width="4"/>
+<text x="70" y="116" font-family="Arial, Microsoft YaHei, sans-serif" font-size="48" font-weight="900" fill="#1A1A1A">实验工具证据</text>
+<rect x="70" y="170" width="860" height="84" rx="16" fill="#FFFFFF" stroke="#DDE8D8"/><text x="108" y="222" font-size="34" font-weight="800" fill="#2F3B2E">问卷量表</text><rect x="70" y="288" width="860" height="84" rx="16" fill="#FFFFFF" stroke="#DDE8D8"/><text x="108" y="340" font-size="34" font-weight="800" fill="#2F3B2E">访谈提纲</text><rect x="70" y="406" width="860" height="84" rx="16" fill="#FFFFFF" stroke="#DDE8D8"/><text x="108" y="458" font-size="34" font-weight="800" fill="#2F3B2E">任务脚本</text>
+<rect x="70" y="560" width="860" height="86" rx="18" fill="#2F3B2E"/>
+<text x="108" y="614" font-family="Arial, Microsoft YaHei, sans-serif" font-size="26" font-weight="700" fill="#B7D7A8">当前用于预实验准备，不表述为已完成实验结果</text>
+</svg>
