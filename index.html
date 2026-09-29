@@ -13,6 +13,7 @@
   <link rel="preload" as="image" href="assets/method-context.webp">
   <link rel="preload" as="image" href="assets/method-judgment.webp">
   <link rel="preload" as="image" href="assets/method-reason.webp">
+  <link rel="preload" as="image" href="assets/fasbos-tech-qr.png">
   <title>FASBOS 开题答辩｜让田间发现真正抵达决策</title>
   <style>
     :root{
@@ -318,6 +319,57 @@
     .storyboard figcaption{padding:18px 20px 20px;font:700 clamp(17px,1.2vw,24px) var(--display);display:flex;align-items:center;gap:13px}
     .storyboard figcaption b{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--forest);color:white;font-size:14px;flex:0 0 auto}
     .storyboard li:nth-child(3) figcaption b,.storyboard li:nth-child(4) figcaption b{background:var(--clay)}
+    /* density + layout repair for formal defense pages */
+    .agenda-v2.active,.evidence-map-slide.active,.experiment-slide.active,.metrics-slide.active,.analysis-slide.active,.public-timeline.active{display:block}
+    .agenda-v2 .title,.evidence-map-slide .title,.experiment-slide .title,.metrics-slide .title,.analysis-slide .title,.public-timeline .title{font-size:clamp(36px,3.15vw,62px);max-width:94%}
+    .agenda-v2 .agenda-track{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:1px;height:62vh;margin-top:3vh;background:var(--line);border:1px solid var(--line);align-items:stretch}
+    .agenda-v2 .agenda-track::before{display:none}
+    .agenda-v2 .agenda-item{display:grid;grid-template-columns:58px 1fr;grid-template-rows:auto auto;column-gap:1.2vw;align-content:center;padding:2.2vw;background:#fff;overflow:hidden}
+    .agenda-v2 .agenda-item:nth-child(2),.agenda-v2 .agenda-item:nth-child(4),.agenda-v2 .agenda-item:nth-child(6){background:#edf3e7}
+    .agenda-v2 .agenda-item i{grid-row:1/3;width:52px;height:52px;margin:0;font-size:17px;align-self:start}
+    .agenda-v2 .agenda-item h3{font:800 clamp(22px,1.6vw,31px) var(--display);margin:0 0 .8vh}
+    .agenda-v2 .agenda-item p{font-size:clamp(13px,.88vw,17px);line-height:1.55}
+    .agenda-question{grid-column:2;align-self:end;margin-top:3.2vh;padding-top:1.2vh;border-top:1px solid var(--line);font-size:clamp(12px,.78vw,15px);line-height:1.45;color:var(--moss);font-weight:700}
+    .agenda-v2 .agenda-item::after{position:absolute;right:1.4vw;bottom:-2.2vh;font:800 clamp(78px,7vw,132px)/1 var(--display);color:var(--forest);opacity:.045;pointer-events:none}
+    .agenda-v2 .agenda-item:nth-child(1)::after{content:"景"}.agenda-v2 .agenda-item:nth-child(2)::after{content:"综"}.agenda-v2 .agenda-item:nth-child(3)::after{content:"研"}.agenda-v2 .agenda-item:nth-child(4)::after{content:"创"}.agenda-v2 .agenda-item:nth-child(5)::after{content:"计"}.agenda-v2 .agenda-item:nth-child(6)::after{content:"果"}
+    .storyboard img{object-fit:contain;background:#f8f7f2}
+    .storyboard figure{height:56vh}
+    .evidence-map-slide .lit-map{grid-template-columns:repeat(2,1fr);gap:1px;margin-top:3vh;background:var(--line);border:1px solid var(--line)}
+    .evidence-map-slide .lit-map::before{display:none}
+    .evidence-map-slide .lit{display:grid;grid-template-columns:86px 1fr;grid-template-rows:auto 1fr;column-gap:1.2vw;align-content:center;min-height:28.5vh;padding:2vw;background:#fff;text-align:left}
+    .evidence-map-slide .lit:nth-child(2),.evidence-map-slide .lit:nth-child(3){background:#edf3e7}
+    .evidence-map-slide .lit .node{grid-row:1/3;width:72px;height:72px;margin:0;border-radius:18px;font-size:28px}
+    .evidence-map-slide .lit h3{font:800 clamp(23px,1.7vw,34px) var(--display);margin:0 0 .7vh}
+    .evidence-map-slide .lit p{font-size:clamp(13px,.9vw,17px);line-height:1.55;margin:0}
+    .evidence-map-core{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);z-index:3;width:112px;height:112px;border-radius:50%;display:grid;place-items:center;text-align:center;padding:12px;background:var(--forest);color:white;border:8px solid var(--paper);font:800 15px/1.25 var(--display);box-shadow:0 10px 24px rgba(20,59,47,.18)}
+    .gap-slide .gapchain.visual-gap{grid-template-columns:1fr 90px 1fr 90px 1fr;margin-top:2.7vh}
+    .visual-gap .gapnode{display:grid;grid-template-columns:118px 1fr;align-items:center;gap:1.2vw;min-height:24vh}
+    .visual-gap .gapnode img{width:112px;height:112px;object-fit:contain;filter:invert(83%) sepia(32%) saturate(721%) hue-rotate(34deg) brightness(97%)}
+    .visual-gap .gapnode strong{font-size:clamp(24px,1.8vw,35px);margin-bottom:.6vh}
+    .visual-gap .gapnode p{font-size:clamp(13px,.9vw,17px);line-height:1.45;margin:0}
+    .gaparrow{font:700 clamp(30px,3vw,56px) var(--display);text-align:center;color:#759486}.gaparrow.broken{color:var(--clay)}
+    .research-bridge{display:grid;grid-template-columns:1fr 72px 1fr 72px 1fr;align-items:center;margin-top:2vh}
+    .research-bridge .bridge-card{padding:1.2vh 1vw;background:rgba(255,255,255,.09);border-top:2px solid var(--leaf)}
+    .research-bridge b{display:block;color:var(--leaf);font:800 clamp(15px,1vw,20px) var(--display);margin-bottom:.35vh}
+    .research-bridge span{color:#bed0c5;font-size:clamp(11px,.72vw,14px);line-height:1.4}
+    .research-bridge i{text-align:center;color:var(--clay);font:800 28px var(--display);font-style:normal}
+    .experiment-slide .flow{gap:1px;margin-top:3vh;min-height:53vh;background:var(--line);border:1px solid var(--line)}
+    .experiment-slide .flow::before{display:none}
+    .experiment-slide .flowstep{padding:2.2vw 1.6vw;background:#fff;display:flex;flex-direction:column;justify-content:center;border-top:5px solid var(--forest)}
+    .experiment-slide .flowstep:nth-child(even){background:#edf3e7;border-top-color:var(--clay)}
+    .experiment-slide .flowstep::before{position:static;width:58px;height:58px;margin-bottom:3vh;font-size:20px}
+    .experiment-slide .flowstep h3{font-size:clamp(20px,1.35vw,27px)}
+    .experiment-slide .flowstep p{font-size:clamp(12px,.82vw,16px);line-height:1.55}
+    .metrics-slide .metrics{height:62vh;margin-top:2.4vh}
+    .analysis-slide .analysis-grid{margin-top:2.5vh;min-height:58vh}
+    .analysis-slide .analysis-row{padding:2.2vw;grid-template-columns:160px 1fr;align-items:center}
+    .analysis-slide .analysis-row b{font-size:clamp(18px,1.3vw,25px)}
+    .analysis-slide .analysis-row div{font-size:clamp(13px,.92vw,18px);line-height:1.6}
+    .public-timeline .timeline{margin-top:3.5vh;min-height:55vh;align-items:stretch}
+    .public-timeline .time{padding:6vh 1.4vw 2vh;background:#fff;border:1px solid var(--line);border-left:0}
+    .public-timeline .time:first-child{border-left:1px solid var(--line)}
+    .public-timeline .time b{font-size:clamp(18px,1.25vw,24px)}
+    .public-timeline .time p{font-size:clamp(12px,.82vw,16px);line-height:1.55}
 
     /* detailed literature evidence */
     .lit-deep.active{display:block;background:#f4f7f1}
@@ -413,15 +465,15 @@
     <div class="source">核心命题：脚手架能否减少跨角色信息衰减，并改善管理者分诊？</div>
   </section>
 
-  <section class="slide pad agenda" data-title="汇报结构">
+  <section class="slide pad agenda agenda-v2" data-title="汇报结构">
     <div><div class="chapter">汇报结构</div><h2 class="title" style="margin-top:20px">从问题，走向可执行的研究计划</h2></div>
     <div class="agenda-track">
-      <div class="agenda-item"><i>01</i><h3>背景与意义</h3><p>为什么农业 AI 的最后一公里发生在组织协作中</p></div>
-      <div class="agenda-item"><i>02</i><h3>文献综述</h3><p>已有证据能说明什么，仍缺什么</p></div>
-      <div class="agenda-item"><i>03</i><h3>研究方法</h3><p>DCS、实验条件、指标与统计</p></div>
-      <div class="agenda-item"><i>04</i><h3>创新与难点</h3><p>可辨识贡献与正式采集门禁</p></div>
-      <div class="agenda-item"><i>05</i><h3>项目计划</h3><p>当前就绪度、依赖与时间窗口</p></div>
-      <div class="agenda-item"><i>06</i><h3>项目预期</h3><p>论文、方法、系统与规范</p></div>
+      <div class="agenda-item"><i>01</i><h3>背景与意义</h3><p>农业 AI 的最后一公里为什么发生在组织协作中</p><span class="agenda-question">现场知识为何在上报中丢失？</span></div>
+      <div class="agenda-item"><i>02</i><h3>文献综述</h3><p>已有证据能说明什么，仍然缺少什么</p><span class="agenda-question">哪些机制已有证据，哪里仍断裂？</span></div>
+      <div class="agenda-item"><i>03</i><h3>研究方法</h3><p>DCS、实验条件、指标体系与统计方法</p><span class="agenda-question">如何把上游记录与下游判断连起来？</span></div>
+      <div class="agenda-item"><i>04</i><h3>创新与难点</h3><p>理论、方法与系统层面的研究贡献</p><span class="agenda-question">贡献在哪里，风险如何控制？</span></div>
+      <div class="agenda-item"><i>05</i><h3>项目计划</h3><p>研究阶段、关键任务与时间安排</p><span class="agenda-question">何时完成原型、采集与分析？</span></div>
+      <div class="agenda-item"><i>06</i><h3>项目预期</h3><p>研究发现、设计方法、原型与指南</p><span class="agenda-question">最终形成什么学术与设计成果？</span></div>
     </div>
   </section>
 
@@ -453,7 +505,7 @@
 
   <section class="slide black pad vcenter" data-title="文献综述"><div class="chapter">第二部分</div><h2 class="display">文献综述<br>与评析</h2><p class="lede">文献能支持设计机制，不能替代农业异常的直接比较。</p><div class="big-number" style="position:absolute;right:6vw;bottom:7vh;color:rgba(174,202,99,.22)">02</div></section>
 
-  <section class="slide pad" data-title="四条证据线">
+  <section class="slide pad evidence-map-slide" data-title="四条证据线">
     <div class="chapter">已有证据</div><h2 class="title" style="margin-top:20px">四条证据线，指向同一个问题</h2>
     <div class="lit-map">
       <div class="lit"><div class="node">记</div><h3>记录端</h3><p>数字技能、设备可及性与表达负担共同影响记录质量；结构化提示提高字段覆盖，也可能增加确认成本。</p></div>
@@ -461,7 +513,8 @@
       <div class="lit"><div class="node">判</div><h3>判断端</h3><p>解释可能降低、无效或增加过度依赖；AI 前判与 AI 后修订的顺序必须进入实验。</p></div>
       <div class="lit"><div class="node">闭</div><h3>协作端</h3><p>责任、期限、补证与复查均有局部证据，却尚未连成同一农业异常闭环。</p></div>
     </div>
-    <div class="source">来源：paper1_related_work_outline_v2.md §1–3</div>
+    <div class="evidence-map-core">跨角色<br>信息连续性</div>
+    <div class="source">来源：文献综述材料 §1–3</div>
   </section>
 
   <section class="slide pad lit-deep" data-title="记录端证据">
@@ -497,22 +550,22 @@
   <section class="slide pad lit-deep" data-title="闭环协作证据">
     <div class="lit-deep-head blur-fade"><div><div class="chapter">证据线 4 · 协作闭环</div><h2 class="title" style="margin-top:18px">每个回退点，<br>都可能成为新的断点。</h2></div><p class="lede">责任、期限、同伴比较、人工升级、分步执行和共享输出都有局部证据；当前资料仍未将它们连成同一农业异常的端到端验证。</p></div>
     <div class="lit-evidence-grid">
-      <article class="lit-card magic-card"><div><div class="evidence-tag">责任可见</div><h3>问题必须连接行动、所有者和期限。</h3><p>农业安全学习圈会记录风险、行动、责任人、期限和完成状态；太阳能灌溉案例也显示数据与维护经验会进入社区协作。</p></div><div class="cite">paper-150-R05；2604.09395v1::C020/C021/C025/C037</div></article>
-      <article class="lit-card magic-card"><div><div class="evidence-tag">回退可用</div><h3>架构里“有升级”，不等于运营中“能升级”。</h3><p>复杂协作应允许暂停、补证、重分配与重新规划；但如果没有明确响应责任和超时机制，人工升级可能变成等待与责任漂移。</p></div><div class="cite">paper-189-M01/L03；3706598.3713680::C016/C017</div></article>
-      <article class="lit-card magic-card"><div><div class="evidence-tag">共享输出 ≠ 共享控制</div><h3>AI 输出会进入现有的作者权与协调规范。</h3><p>多人—AI 协作中，建议可被不同成员接受或修改；因此必须明确谁可以查看、修改、接受和关闭结果，而不是把“共享”当成权限答案。</p></div><div class="cite">paper-188-M02/AI01，跨场景迁移需谨慎</div></article>
+      <article class="lit-card magic-card"><div><div class="evidence-tag">责任可见</div><h3>问题必须连接行动、所有者和期限。</h3><p>农业安全学习圈会记录风险、行动、责任人、期限和完成状态；太阳能灌溉案例也显示数据与维护经验会进入社区协作。</p></div><div class="cite">农业安全学习圈研究；太阳能灌溉社区协作研究</div></article>
+      <article class="lit-card magic-card"><div><div class="evidence-tag">回退可用</div><h3>架构里“有升级”，不等于运营中“能升级”。</h3><p>复杂协作应允许暂停、补证、重分配与重新规划；但如果没有明确响应责任和超时机制，人工升级可能变成等待与责任漂移。</p></div><div class="cite">人机协作中的升级与回退机制研究</div></article>
+      <article class="lit-card magic-card"><div><div class="evidence-tag">共享输出 ≠ 共享控制</div><h3>AI 输出会进入现有的作者权与协调规范。</h3><p>多人—AI 协作中，建议可被不同成员接受或修改；因此必须明确谁可以查看、修改、接受和关闭结果，而不是把“共享”当成权限答案。</p></div><div class="cite">多人—AI 协作研究；跨场景迁移需谨慎</div></article>
     </div>
     <div class="lit-verdict"><div><strong>当前缺口</strong><span>上报可用性、分诊质量、任务响应、执行证据与复查结论尚未在同一工作流中被连接。</span></div><div><strong>边界声明</strong><span>这一缺失判断仅限于当前 52 篇资料范围，不升级为“领域内没有研究”。</span></div></div>
   </section>
 
   <section class="slide black pad gap-slide" data-title="研究缺口">
-    <div class="chapter">研究缺口</div><h2 class="title" style="margin-top:20px;color:white">已知机制仍是碎片，缺少一条完整证据链</h2>
-    <div class="gapchain">
-      <div class="gapnode"><strong>表达负担</strong><p class="lede">工人能否低负荷地把异常说清楚</p></div><div class="gaparrow">→</div>
-      <div class="gapnode"><strong>信息保真</strong><p class="lede">字段是否跨角色保留诊断价值</p></div><div class="gaparrow broken">╱</div>
-      <div class="gapnode"><strong>分诊判断</strong><p class="lede">管理者是否作出更适当的处置与升级</p></div>
+    <div class="chapter">研究缺口</div><h2 class="title" style="margin-top:20px;color:white">我们知道每一段怎么改善，却不知道改善能否传到下一段</h2>
+    <div class="gapchain visual-gap">
+      <div class="gapnode"><img src="assets/method-observe.webp" alt="田间观察"><div><strong>工人看见异常</strong><p>提示可能帮助表达，但也可能增加负担。</p></div></div><div class="gaparrow">→</div>
+      <div class="gapnode"><img src="assets/method-context.webp" alt="信息被组织"><div><strong>信息被组织</strong><p>字段更完整，不代表关键诊断线索被保留下来。</p></div></div><div class="gaparrow broken">断</div>
+      <div class="gapnode"><img src="assets/method-judgment.webp" alt="管理者研判"><div><strong>管理者做判断</strong><p>现有研究很少追踪上游信息如何影响处置与升级。</p></div></div>
     </div>
-    <div class="evidence-rail"><div><b>研究 1 · 上游</b><span>比较 C0/C1/C2 对表达负担与 Core-IAR 的影响。</span></div><div><b>冻结交接物</b><span>把真实上报转成后续实验唯一输入，切断同步互动干扰。</span></div><div><b>研究 2 · 下游</b><span>检验信息质量能否转化为处置、升级与判断过程差异。</span></div></div>
-    <p class="quote" style="margin-top:3.2vh;color:var(--leaf)">农业 HCI 尚未把三者放进同一受控链路。</p>
+    <div class="research-bridge"><div class="bridge-card"><b>研究 1：比较上报方式</b><span>测量表达负担与信息保真。</span></div><i>→</i><div class="bridge-card"><b>冻结真实上报</b><span>把同一份交接物带入下一阶段。</span></div><i>→</i><div class="bridge-card"><b>研究 2：观察分诊结果</b><span>检验信息质量是否真正改善判断。</span></div></div>
+    <p class="quote" style="margin-top:2.5vh;color:var(--leaf)">本研究要补上的，是“上报改善 → 信息保留 → 分诊改善”这条证据链。</p>
   </section>
 
   <section class="slide dark pad vcenter" data-title="研究思路与方法"><div class="chapter">第三部分</div><h2 class="display">研究思路<br>与方法</h2><p class="lede">以分布式认知支架为框架，以链式异步协同实验为验证路径。</p><div class="big-number" style="position:absolute;right:6vw;bottom:7vh;color:rgba(174,202,99,.2)">03</div></section>
@@ -572,7 +625,7 @@
     <div class="source">来源：实验计划眼动修订版 §2；实验原型实施计划 v1.4 §2；AGENTS.md D1/D4</div>
   </section>
 
-  <section class="slide pad" data-title="实验链">
+  <section class="slide pad experiment-slide" data-title="实验链">
     <div class="chapter">链式异步协同实验</div><h2 class="title" style="margin-top:18px">研究 1 生成真实上报，研究 2 使用冻结上报完成分诊</h2>
     <div class="flow">
       <div class="flowstep" data-n="1"><h3>刺激与金标准</h3><p>专家标注异常、风险、Hard/Soft 与 Signal/Noise</p></div>
@@ -584,7 +637,7 @@
     <div class="source">来源：实验计划眼动修订版 §3–6；设计讨论纪要 §2.1–2.3</div>
   </section>
 
-  <section class="slide pad" data-title="核心指标">
+  <section class="slide pad metrics-slide" data-title="核心指标">
     <div class="chapter">测量体系</div><h2 class="title" style="margin-top:18px">上游信息质量，必须与下游决策质量连起来</h2>
     <div class="metrics">
       <div class="metric"><div class="metric-code">P1</div><h3>Core-IAR</h3><p>缺失 Hard Required 字段数 / 总数。按内容编码，不按槽位计数；直接衡量信息在链路中的损耗。</p></div>
@@ -596,11 +649,11 @@
   </section>
 
   <section class="slide eye" data-title="眼动方法">
-    <div class="eye-photo"><img src="assets/eye-device.jpg" alt="眼动采集过程视觉示意"><div class="reticle"></div></div>
+    <div class="eye-photo"><img src="assets/49782f834645df1.jpg" alt="眼动实验设备与采集场景"><div class="reticle"></div></div>
     <div class="eye-copy"><div class="chapter">过程证据</div><h2 class="title" style="color:white;margin-top:24px">眼动解释“如何判断”，<br>不替代主结论</h2><div class="specs"><div class="spec"><b>120 Hz</b><span>眼镜式眼动仪</span></div><div class="spec"><b>9 点</b><span>校准，每 8 trial 验证</span></div><div class="spec"><b>64 px</b><span>AOI 最小间距</span></div><div class="spec"><b>33–67 ms</b><span>行为日志对齐精度</span></div></div><p class="lede" style="margin-top:5vh">有效采样率 &lt;75% 则降级或取消；设备不稳定不影响主实验成立。</p></div>
   </section>
 
-  <section class="slide pad" data-title="统计分析">
+  <section class="slide pad analysis-slide" data-title="统计分析">
     <div class="chapter">分析策略</div><h2 class="title" style="margin-top:18px">混合模型与效应量为主，不用 trial 行数冒充样本量</h2>
     <div class="analysis-grid">
       <div class="analysis-row"><b>条件 → IAR</b><div>Beta / Binomial GLMM；C0–C1、C1–C2；被试、刺激、上报来源随机效应。</div></div>
@@ -627,18 +680,18 @@
     <div class="ready-visual"><img src="assets/fasbos-cover-board.png" alt="FASBOS 多端原型界面总览"></div>
   </section>
 
-  <section class="slide pad" data-title="项目时间线">
-    <div class="chapter">从开题到论文</div><h2 class="title" style="margin-top:18px">数据采集路径与门禁</h2>
-    <div class="timeline"><div class="time"><b>2026.10<br>研究决策</b><p>核实管理者 N、作物重叠，完成 G1–G4 会谈与修订签字。</p></div><div class="time"><b>2026.10–11<br>技术门禁</b><p>VLM 基线、功效模拟、正射图与刺激来源档案。</p></div><div class="time"><b>2026.11–2027.01<br>仪器完成</b><p>IRB、形成性访谈、分类谱、WoZ 台与配平器。</p></div><div class="time"><b>2027.02–05<br>正式采集</b><p>田间材料、专家标注、工人实验、管理者实验。</p></div><div class="time"><b>2027.06 起<br>分析与写作</b><p>IAR、LME/GLMM、SDT、RECE、眼动与 joint display。</p></div></div>
-    <div class="source">来源：实验原型实施计划 v1.4 §9；设计讨论纪要 §6</div>
+  <section class="slide pad public-timeline" data-title="项目时间线">
+    <div class="chapter">项目计划</div><h2 class="title" style="margin-top:18px">从研究框架到论文产出的五个阶段</h2>
+    <div class="timeline"><div class="time"><b>2026.10–12<br>框架与材料</b><p>完善文献综述、研究问题与指标体系；完成田间异常材料整理和专家校核。</p></div><div class="time"><b>2027.01–02<br>原型与预实验</b><p>完善三种上报方式和桌面分诊端，通过小规模预实验修订任务与问卷。</p></div><div class="time"><b>2027.03–05<br>研究 1：上报</b><p>开展观察者实验，比较不同引导方式对表达负担和信息保真的影响。</p></div><div class="time"><b>2027.05–07<br>研究 2：分诊</b><p>使用冻结上报开展管理者实验，采集决策表现、过程与眼动证据。</p></div><div class="time"><b>2027.08–10<br>分析与写作</b><p>整合定量和质性结果，提炼设计原则，完成论文撰写与成果整理。</p></div></div>
+    <div class="source">依据研究计划与实验实施安排整理</div>
   </section>
 
   <section class="slide black pad vcenter" data-title="项目预期"><div class="chapter">第六部分</div><h2 class="display">项目预期</h2><p class="lede">交付一套可审计的研究方法，而不只是一个界面原型。</p><div class="big-number" style="position:absolute;right:6vw;bottom:7vh;color:rgba(174,202,99,.2)">06</div></section>
 
   <section class="slide pad outputs-slide" data-title="预期产出">
-    <div class="chapter">预期产出与判断标准</div><h2 class="title" style="margin-top:18px">成功不是“C2 全面胜出”</h2>
-    <div class="outputs"><div class="output"><div class="num">01</div><div><h3>理论与论文</h3><p>验证 DCS 是否帮助异常信息跨越观察者—管理者边界，并明确何时无效、为什么无效。</p></div></div><div class="output"><div class="num">02</div><div><h3>方法与数据</h3><p>形成 Core/Extended-IAR、P2、P3、RECE、SDT 与质性 joint display 的可复核证据链。</p></div></div><div class="output"><div class="num">03</div><div><h3>系统与规范</h3><p>交付三条件工人端、WoZ 操作者台、固定 PC 分诊台、刺激档案与实验数据合同。</p></div></div></div>
-    <div class="output-proof"><div><b>可解释</b><span>报告效应量、区间、过程证据与失败条件。</span></div><div><b>可复核</b><span>冻结刺激、预注册口径、保存 provenance 与事件日志。</span></div><div><b>可迁移</b><span>沉淀跨角色信息支持原则，而非只交付一个小程序。</span></div></div>
+    <div class="chapter">项目预期</div><h2 class="title" style="margin-top:18px">形成一套可解释、可复用的跨角色信息支持方案</h2>
+    <div class="outputs"><div class="output"><div class="num">01</div><div><h3>研究发现</h3><p>解释不同引导方式如何影响田间人员的表达负担、信息完整性，以及管理者后续判断。</p></div></div><div class="output"><div class="num">02</div><div><h3>设计方法</h3><p>提出面向“观察—上报—研判—处置”链路的信息支架框架和跨角色信息质量评价方法。</p></div></div><div class="output"><div class="num">03</div><div><h3>原型与指南</h3><p>形成可演示的 FASBOS 原型、实验材料和设计建议，为道地药材种植协作提供参考。</p></div></div></div>
+    <div class="output-proof"><div><b>学术成果</b><span>完成学位论文并形成相关论文投稿。</span></div><div><b>设计成果</b><span>沉淀跨角色信息支持框架、指标与交互原则。</span></div><div><b>实践价值</b><span>为田间异常上报与远程研判提供可验证的设计路径。</span></div></div>
   </section>
 
   <section class="slide close" data-title="结束">
