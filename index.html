@@ -63,6 +63,10 @@
     .counter{position:fixed;left:20px;bottom:14px;z-index:60;color:white;background:rgba(7,27,20,.78);padding:6px 10px;border-radius:20px;font:600 12px var(--display)}
     .hint{position:fixed;top:16px;right:20px;z-index:60;color:#d8e6df;background:rgba(7,27,20,.72);padding:7px 11px;border-radius:20px;font-size:12px;opacity:.22;transition:opacity .2s}
     .hint:hover{opacity:.9}
+    .qr-dock{position:fixed;right:18px;bottom:18px;z-index:58;width:clamp(70px,5.3vw,102px);padding:6px 6px 5px;background:rgba(255,255,255,.94);border:1px solid rgba(20,59,47,.18);box-shadow:0 8px 24px rgba(7,27,20,.16);text-decoration:none;backdrop-filter:blur(8px);transition:transform .2s ease,box-shadow .2s ease}
+    .qr-dock:hover,.qr-dock:focus-visible{transform:translateY(-3px);box-shadow:0 12px 30px rgba(7,27,20,.24);outline:2px solid var(--leaf);outline-offset:2px}
+    .qr-dock img{display:block;width:100%;aspect-ratio:1;object-fit:contain}
+    .qr-dock span{display:block;margin-top:3px;text-align:center;color:var(--forest);font:800 clamp(8px,.52vw,10px)/1.15 var(--display);letter-spacing:.02em}
 
     /* 1 cover */
     .cover{display:grid!important;grid-template-columns:1.05fr .95fr}
@@ -644,6 +648,7 @@
 </main>
 
 <div class="controls" aria-label="幻灯片控制"><button id="prev" aria-label="上一页">↑</button><button id="next" aria-label="下一页">↓</button><button id="fs" aria-label="全屏">⛶</button></div>
+<a class="qr-dock" href="https://fasbos.tech" target="_blank" rel="noopener" aria-label="扫码或点击访问 fasbos.tech"><img src="assets/fasbos-tech-qr.png" alt="fasbos.tech 二维码"><span>fasbos.tech</span></a>
 <div class="counter" id="counter">1 / 31</div><div class="hint">← → 翻页 · F 全屏 · Home 回到封面</div><div class="progress" id="progress"></div>
 <script>
   const slides=[...document.querySelectorAll('.slide')];
